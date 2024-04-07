@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Manager</title>
+</head>
+<body>
+    <h1>Add a New Recipe</h1>
+    <form id="recipeForm">
+        <div>
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" required>
+        </div>
+        <div>
+            <label for="ingredients">Ingredients (comma-separated):</label>
+            <input type="text" id="ingredients" name="ingredients" required>
+        </div>
+        <div>
+            <label for="instructions">Instructions:</label>
+            <input type="text" id="instructions" name="instructions" required>
+        </div>
+        <div>
+            <label for="cookingTime">Cooking Time:</label>
+            <input type="text" id="cookingTime" name="cookingTime" required>
+        </div>
+        <button type="submit">Add Recipe</button>
+    </form>
+
+    <script>
+        document.getElementById('recipeForm').addEventListener('submit', async function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            const formData = {
+                title: document.getElementById('title').value,
+                ingredients: document.getElementById('ingredients').value.split(',').map(ingredient => ingredient.trim()), // Split by comma and trim spaces
+                instructions: document.getElementById('instructions').value,
+                cookingTime: document.getElementById('cookingTime').value,
+            };
+
+            try {
+                const response = await fetch('/api/recipes', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData),
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.statusText}`);
+                }
+
+                const result = await response.json();
+                alert('Recipe added successfully');
+                // Optionally clear the form here
+                document.getElementById('recipeForm').reset();
+            } catch (error) {
+                console.error('Failed to add recipe:', error);
+                alert('Failed to add recipe');
+            }
+        });
+    </script>
+</body>
+</html>
