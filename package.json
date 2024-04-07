@@ -3,8 +3,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
-    "mongoose": "^8.3.0",
-    "nodemon": "^3.1.0"
+    "mongoose": "^8.3.0"
   },
   "name": "fullstack_assignment1",
   "description": "Lab1",
@@ -23,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/lakshmivishal9496/Fullstack_Assignment1/issues"
   },
-  "homepage": "https://github.com/lakshmivishal9496/Fullstack_Assignment1#readme"
+  "homepage": "https://github.com/lakshmivishal9496/Fullstack_Assignment1#readme",
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
 }
