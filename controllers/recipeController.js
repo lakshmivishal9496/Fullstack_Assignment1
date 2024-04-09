@@ -13,12 +13,11 @@ export async function findAll(req, res) {
 // Get a single recipe by title
 export async function findOne(req, res) {
     try {
-        const recipe = await Recipe.findOne({ title: req.params.title });
-        if (recipe) {
-            res.json(recipe);
-        } else {
-            res.status(404).json({ message: 'Recipe not found' });
+        const recipe = await Recipe.findById(req.params.id);
+        if (!recipe) {
+            return res.status(404).json({ message: 'Recipe not found' });
         }
+        res.json(recipe);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -42,30 +41,32 @@ export async function create(req, res) {
 }
 
 // Update a recipe by id
-export async function update(req, res) {
+// In controllers/recipeController.js
+export const updateRecipe = async (req, res) => {
+    const { id } = req.params;
+    const updateData = req.body;
+
     try {
-        const updatedRecipe = await Recipe.findByIdAndUpdate(req.params.id, req.body, { new: true });
-        if (updatedRecipe) {
-            res.json(updatedRecipe);
-        } else {
-            res.status(404).json({ message: 'Recipe not found' });
+        const updatedRecipe = await Recipe.findByIdAndUpdate(id, updateData, { new: true });
+        if (!updatedRecipe) {
+            return res.status(404).json({ message: 'Recipe not found' });
         }
+        res.json(updatedRecipe);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
-}
+};
 
 // Delete a recipe by id
-export async function deleteRecipe(req, res) {
+export const deleteRecipe = async (req, res) => {
     try {
-        const recipe = await Recipe.findById(req.params.id);
-        if (recipe) {
-            await recipe.remove();
-            res.json({ message: 'Deleted Recipe' });
-        } else {
-            res.status(404).json({ message: 'Recipe not found' });
+        const deletedRecipe = await Recipe.findByIdAndDelete(req.params.id);
+        if (!deletedRecipe) {
+            return res.status(404).json({ message: 'Recipe not found' });
         }
+        res.status(204).send(); // 204 No Content
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
-}
+};
+

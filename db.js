@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const defaultConnectionString = 'mongodb+srv://lakshmivishal9496:Happycouple@24@cluster0.2ffuhyk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
+const defaultConnectionString = 'mongodb+srv://lakshmivishal9496:Happy%4024@cluster0.2ffuhyk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
 
 export const connectDB = async () => {
   // Use the connection URL from the environment variable or fallback to the hardcoded one

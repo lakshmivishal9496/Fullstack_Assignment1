@@ -28,38 +28,77 @@
     </form>
 
     <script>
-        document.getElementById('recipeForm').addEventListener('submit', async function(event) {
-            event.preventDefault(); // Prevent the default form submission
-
-            const formData = {
-                title: document.getElementById('title').value,
-                ingredients: document.getElementById('ingredients').value.split(',').map(ingredient => ingredient.trim()), // Split by comma and trim spaces
-                instructions: document.getElementById('instructions').value,
-                cookingTime: document.getElementById('cookingTime').value,
-            };
-
-            try {
-                const response = await fetch('/api/recipes', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData),
-                });
-
-                if (!response.ok) {
-                    throw new Error(`Error: ${response.statusText}`);
-                }
-
-                const result = await response.json();
-                alert('Recipe added successfully');
-                // Optionally clear the form here
-                document.getElementById('recipeForm').reset();
-            } catch (error) {
-                console.error('Failed to add recipe:', error);
-                alert('Failed to add recipe');
+        document.addEventListener('DOMContentLoaded', async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const recipeId = urlParams.get('id');
+            
+            // Populate form in case of update
+            if (recipeId) {
+                populateFormForUpdate(recipeId);
             }
+            
+            document.getElementById('recipeForm').addEventListener('submit', async function(event) {
+                event.preventDefault();
+                
+                const formData = {
+                    title: document.getElementById('title').value,
+                    ingredients: document.getElementById('ingredients').value.split(',').map(ingredient => ingredient.trim()),
+                    instructions: document.getElementById('instructions').value,
+                    cookingTime: document.getElementById('cookingTime').value,
+                };
+        
+                if (recipeId) {
+                    await updateRecipe(recipeId, formData);
+                } else {
+                    await createRecipe(formData);
+                }
+            });
         });
+    
+        async function populateFormForUpdate(recipeId) {
+            const response = await fetch(`/api/recipes/${recipeId}`);
+            if (!response.ok) {
+                console.error('Failed to fetch recipe for update');
+                return;
+            }
+            const recipe = await response.json();
+            document.getElementById('title').value = recipe.title;
+            document.getElementById('ingredients').value = recipe.ingredients.join(', ');
+            document.getElementById('instructions').value = recipe.instructions;
+            document.getElementById('cookingTime').value = recipe.cookingTime;
+            // Change form header or button text if needed
+        }
+    
+        async function updateRecipe(recipeId, data) {
+            const response = await fetch(`/api/recipes/${recipeId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
+            });
+            if (!response.ok) {
+                alert('Failed to update recipe');
+                console.error('Failed to update recipe:', response.statusText);
+                return;
+            }
+            alert('Recipe updated successfully');
+            window.location.href = 'recipes.html'; // Redirect or handle as needed
+        }
+    
+        async function createRecipe(data) {
+            const response = await fetch('/api/recipes', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
+            });
+            if (!response.ok) {
+                alert('Failed to create recipe');
+                console.error('Failed to create recipe:', response.statusText);
+                return;
+            }
+            alert('Recipe added successfully');
+            window.location.href = 'recipes.html'; // Redirect or handle as needed
+        }
     </script>
+     
 </body>
 </html>

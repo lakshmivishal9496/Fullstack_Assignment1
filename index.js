@@ -4,7 +4,7 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import { connectDB } from './db.js';
 import recipeRoutes from './routes/recipeRoutes.js';
-
+import cors from 'cors';
 // Setup __dirname in ES module scope
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -12,9 +12,9 @@ const __dirname = dirname(__filename);
 connectDB();
 
 const app = express();
-
+app.use(cors());
 app.use(express.json());
-app.use(express.static('static')); // Serve static files
+app.use(express.static('static')); 
 
 app.use('/api/recipes', recipeRoutes);
 
