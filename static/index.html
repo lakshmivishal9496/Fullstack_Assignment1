@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recipe Manager</title>
+    <link rel="stylesheet" type="text/css" href="./style.css">
+
 </head>
 <body>
     <h1>Add a New Recipe</h1>
@@ -27,78 +29,27 @@
         <button type="submit">Add Recipe</button>
     </form>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', async () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const recipeId = urlParams.get('id');
-            
-            // Populate form in case of update
-            if (recipeId) {
-                populateFormForUpdate(recipeId);
-            }
-            
-            document.getElementById('recipeForm').addEventListener('submit', async function(event) {
-                event.preventDefault();
-                
-                const formData = {
-                    title: document.getElementById('title').value,
-                    ingredients: document.getElementById('ingredients').value.split(',').map(ingredient => ingredient.trim()),
-                    instructions: document.getElementById('instructions').value,
-                    cookingTime: document.getElementById('cookingTime').value,
-                };
-        
-                if (recipeId) {
-                    await updateRecipe(recipeId, formData);
-                } else {
-                    await createRecipe(formData);
-                }
-            });
-        });
-    
-        async function populateFormForUpdate(recipeId) {
-            const response = await fetch(`/api/recipes/${recipeId}`);
-            if (!response.ok) {
-                console.error('Failed to fetch recipe for update');
-                return;
-            }
-            const recipe = await response.json();
-            document.getElementById('title').value = recipe.title;
-            document.getElementById('ingredients').value = recipe.ingredients.join(', ');
-            document.getElementById('instructions').value = recipe.instructions;
-            document.getElementById('cookingTime').value = recipe.cookingTime;
-            // Change form header or button text if needed
-        }
-    
-        async function updateRecipe(recipeId, data) {
-            const response = await fetch(`/api/recipes/${recipeId}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data),
-            });
-            if (!response.ok) {
-                alert('Failed to update recipe');
-                console.error('Failed to update recipe:', response.statusText);
-                return;
-            }
-            alert('Recipe updated successfully');
-            window.location.href = 'recipes.html'; // Redirect or handle as needed
-        }
-    
-        async function createRecipe(data) {
-            const response = await fetch('/api/recipes', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data),
-            });
-            if (!response.ok) {
-                alert('Failed to create recipe');
-                console.error('Failed to create recipe:', response.statusText);
-                return;
-            }
-            alert('Recipe added successfully');
-            window.location.href = 'recipes.html'; // Redirect or handle as needed
-        }
+    <h1>List of Recipes</h1>
+    <table id="recipesTable">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Ingredients</th>
+                <th>Instructions</th>
+                <th>Cooking Time</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Recipes will be added here dynamically -->
+        </tbody>
+    </table>
+    <button style="margin-top: 20px; margin-left: 500px;" onclick="window.location.href = 'index.html';">Add Recipe</button>
+
+    <script src="./recipeData.js">
+       
     </script>
      
 </body>
 </html>
+    

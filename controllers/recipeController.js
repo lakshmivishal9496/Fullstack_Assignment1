@@ -33,6 +33,7 @@ export async function create(req, res) {
     });
 
     try {
+        //Add a validation error check
         const newRecipe = await recipe.save();
         res.status(201).json(newRecipe);
     } catch (error) {

@@ -19,7 +19,7 @@ app.use(express.static('static'));
 app.use('/api/recipes', recipeRoutes);
 
 app.get('/home', (req, res) => {
-    console.log('Serving recipes.html from:', path.join(__dirname, 'static', 'recipes.html'));
+    console.log('Serving index.html from:', path.join(__dirname, 'static', 'index.html'));
     res.sendFile(path.join(__dirname, 'static', 'recipes.html'));
   });
   

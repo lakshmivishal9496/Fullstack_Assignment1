@@ -1,0 +1,90 @@
+/* General body styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+/* Header styling */
+h1 {
+    background-color: #4CAF50;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+/* Form styling */
+form {
+    margin: 20px auto;
+    width: 90%;
+    max-width: 600px;
+    background: white;
+    padding: 20px;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+}
+
+form div {
+    margin-bottom: 10px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    margin: 6px 0 4px;
+    display: inline-block;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    outline: none;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+/* Table styling */
+table {
+    width: 90%;
+    margin: 20px auto;
+    border-collapse: collapse;
+}
+
+th, td {
+    text-align: left;
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+/* Add recipe button positioning */
+#recipesTable + button {
+    display: block;
+    width: 200px;
+    margin: 20px auto;
+    text-align: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    form, table {
+        width: 100%;
+    }
+}
